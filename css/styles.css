@@ -1,0 +1,65 @@
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background: black;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 16px;
+	color: white;
+}
+
+p {
+	margin-bottom: 50px;
+}
+
+table, td {
+	margin: 0;
+	padding: 0;
+}
+
+#menu {
+	padding-left: 100px;
+}
+
+input {
+	margin-bottom: 10px;
+	border-color: white;
+	font-family: 'Roboto Mono', monospace;
+	color: white;
+}
+
+input:focus {
+	outline: 0;
+}
+
+input[type=button] {
+	background: black;
+	border-width: 1px;
+	font-size: 14px;
+}
+
+input[type=button]:disabled {
+	border-color: grey;
+	color: grey;
+}
+
+input[type=button].active, input[type=button]:hover:not([disabled]){
+	background: white;
+	border-color: white;
+	color: black;
+}
+
+.textbox {
+	width: 45px;
+	background: black;
+	border-width: 0px 0px 2px 0px;
+	font-size: 16px;
+}
+
+.textbox:disabled {
+	border-color: black;
+}
+
+#canvas-main {
+	display: block;
+}
