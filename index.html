@@ -14,7 +14,7 @@
 			<form>
 				<input type="button" id="hypo-btn" value="Hypotrochoid" class="active" disabled>
 				<input type="button" id="epi-btn" value="Epitrochoid"><br>
-				Stationary circle radius: 
+				Fixed circle radius: 
 				<input class="textbox" id="R-input" type="number" value="320"><br>
 				Rotating circle radius: 
 				<input class="textbox" id="r-input" type="number" value="105"><br>
@@ -68,7 +68,7 @@
 		var ctxSpiro = spiroCanvas.getContext("2d");
 		
 		// Global variables
-		var R = Number(inputR.value);			// radius of stationary circle
+		var R = Number(inputR.value);			// radius of fixed circle
 		var r = Number(inputr.value);			// radius of rotating circle
 		var offset = Number(inputPen.value);	// pen offset
 		var speedr;								// rotation speed of circle
@@ -138,7 +138,7 @@
 			}
 		})
 		
-		// User changes radius of stationary circle
+		// User changes radius of fixed circle
 		inputR.addEventListener("change", function () {
 			R = Number(inputR.value);
 			if (btnHypo.classList.contains("active")) {
@@ -162,7 +162,7 @@
 		// User changes pen offset
 		inputPen.addEventListener("change", function () {
 			offset = Number(inputPen.value);
-			if (bbtnHypo.classList.contains("active")) {
+			if (btnHypo.classList.contains("active")) {
 				initHypotrochoid();
 			} else {
 				initEpitrochoid();
