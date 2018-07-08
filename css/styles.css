@@ -8,8 +8,14 @@ html, body {
 	color: white;
 }
 
-p {
+a {
+	color: white;
+	text-decoration-line: none;
+}
+
+h2 {
 	margin-bottom: 50px;
+	font-size: 16px;
 }
 
 table, td {
@@ -62,4 +68,8 @@ input[type=button].active, input[type=button]:hover:not([disabled]){
 
 #canvas-main {
 	display: block;
+}
+
+#circle-btn {
+	margin-bottom: 20px;
 }

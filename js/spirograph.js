@@ -1,3 +1,9 @@
+// Downloads a canvas as an image
+function downloadCanvas(a, canvas, filename, format) {
+	a.href = canvas.toDataURL("image/" + format);
+    a.download = filename + "." + format;
+}
+
 // Rotate point by a clockwise angle around a centre point
 function rotatePoint(point, centre, angle) {
 	var x = (point.x - centre.x) * Math.cos(angle) - (point.y - centre.y) * Math.sin(angle) + centre.x;
@@ -90,7 +96,9 @@ function render() {
 	
 	// Stop if spirograph is complete
 	if (numPoints > 1 && Math.abs(firstPosPen.x - posPen.x) < 0.001 && Math.abs(firstPosPen.y - posPen.y) < 0.001) {
+		btnStart.classList.remove("active");
 		btnStart.disabled = true;
+		btnPause.classList.remove("active");
 		btnPause.disabled = true;
 	}
 	
