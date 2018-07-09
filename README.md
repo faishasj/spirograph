@@ -37,26 +37,26 @@ y = (R + r) * sin(t) - p * sin((R + r) / r * t)
 
 For both roulettes, the parametric equations can be split into two terms. The first term (e.g. `(R - r) * cos(t)` for the x-coordinate of a hypotrochoid) expresses the position of the rotating circle. Thus, in the `updateSpiro()` function, we get:
 
-```
+```javascript
 posr = {x: mainCanvas.width / 2 + (R-r) * Math.cos(t), y: mainCanvas.height / 2 - (R-r) * Math.sin(t)};
 ```
 
 for a hypotrochoid, and 
 
-```
+```javascript
 posr = {x: mainCanvas.width / 2 + (R+r) * Math.cos(t), y: mainCanvas.height / 2 + (R+r) * Math.sin(t)};
 ```
 for an epitrochoid. This allows us to draw the rotating circle rolling around the stationary circle.
 
 The second term (e.g. `- p * sin((R + r) / r * t` for the y-coordinate of an epitrochoid) expresses the position of the pen relative to the centre of the rotating circle. Therefore, adding the terms gives us the position of the pen relative to the centre of the fixed circle. In the `updateSpiro()` function below the previous lines, we get:
 
-```
+```javascript
 posPen = {x: posr.x + p * Math.cos((R-r) / r * t), y: posr.y + p * Math.sin((R-r) / r * t)};
 ```
 
 for a hypotrochoid, and
 
-```
+```javascript
 posPen = {x: posr.x - p * Math.cos((R+r) / r * t), y: posr.y - p * Math.sin((R+r) / r * t)};
 ```
 for an epitrochoid. We can now draw the actual result of the spirograph. 
