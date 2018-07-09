@@ -1,95 +1,95 @@
-// Downloads a canvas as an image
-function downloadCanvas(a, canvas, filename, format) {
-	a.href = canvas.toDataURL("image/" + format);
+// Downloads spirograph canvas as an image
+function downloadSpiro(a, filename, format) {
+	a.href = spiroCanvas.toDataURL("image/" + format);
     a.download = filename + "." + format;
 }
 
-// Rotate point by a clockwise angle around a centre point
-function rotatePoint(point, centre, angle) {
-	var x = (point.x - centre.x) * Math.cos(angle) - (point.y - centre.y) * Math.sin(angle) + centre.x;
-	var y = (point.x - centre.x) * Math.sin(angle) + (point.y - centre.y) * Math.cos(angle) + centre.y;
-	return {x:x, y:y};
+// Initialise spirograph setup
+function initSpiro() {
+	t = 0;
+	updateSpiro();
+	firstPosPen = lastPosPen = posPen; 
 }
 
-// Initialise hypotrochoid setup
-function initHypotrochoid() {
-	speedr = 2 * Math.PI / 180;
-	speedPen = -((R-r)/r) * speedr;
-	posr = {x: mainCanvas.width / 2 + R - r, y: mainCanvas.height / 2};	
-	posPen = firstPosPen = lastPosPen = {x: mainCanvas.width / 2 + R - r + offset, y: mainCanvas.height / 2};
-}
-
-// Initialise epitrochoid setup
-function initEpitrochoid() {
-	speedr = Math.PI / 180;
-	speedPen = ((R+r)/r) * speedr;
-	posr = {x: mainCanvas.width / 2 + R + r, y: mainCanvas.height / 2};
-	posPen = firstPosPen = lastPosPen = {x: mainCanvas.width / 2 + R + r + offset, y: mainCanvas.height / 2};
+// Update position of rotating circle and pen
+function updateSpiro() {
+	if (btnHypo.classList.contains("active")) { 
+		// Hypotrochoid parametric equations
+		posr = {x: mainCanvas.width / 2 + (R-r) * Math.cos(t), y: mainCanvas.height / 2 - (R-r) * Math.sin(t)};
+		posPen = {x: posr.x + p * Math.cos((R-r) / r * t), y: posr.y + p * Math.sin((R-r) / r * t)};
+	} else {
+		// Epitrochoid parametric equations
+		posr = {x: mainCanvas.width / 2 + (R+r) * Math.cos(t), y: mainCanvas.height / 2 + (R+r) * Math.sin(t)};
+		posPen = {x: posr.x - p * Math.cos((R+r) / r * t), y: posr.y - p * Math.sin((R+r) / r * t)};
+	}
 }
 
 // Draw circles and pen offset to offscreen canvas
-function renderCircles(canvas, ctx) {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.lineWidth = 3;
-	ctx.lineJoin = 'round';
-	ctx.lineCap = 'round';
-	ctx.strokeStyle = 'white';
-	ctx.fillStyle = 'white';
+function renderCircles() {
+	ctxCircles.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+	ctxCircles.lineWidth = 3;
+	ctxCircles.lineJoin = 'round';
+	ctxCircles.lineCap = 'round';
+	ctxCircles.strokeStyle = 'white';
+	ctxCircles.fillStyle = 'white';
 
 	// Outer circle
-	ctx.beginPath();
-	ctx.arc(canvas.width / 2, canvas.height / 2, R, 0, 2*Math.PI);
-	ctx.stroke();
+	ctxCircles.beginPath();
+	ctxCircles.arc(mainCanvas.width / 2, mainCanvas.height / 2, R, 0, 2*Math.PI);
+	ctxCircles.stroke();
 
 	// Inner circle
-	ctx.beginPath();
-	ctx.arc(posr.x, posr.y, r, 0, 2*Math.PI);
-	ctx.stroke();
+	ctxCircles.beginPath();
+	ctxCircles.arc(posr.x, posr.y, r, 0, 2*Math.PI);
+	ctxCircles.stroke();
 	
 	// Pen offset
-	ctx.beginPath();
-	ctx.moveTo(posr.x, posr.y);
-	ctx.lineTo(posPen.x, posPen.y);
-	ctx.stroke();
+	ctxCircles.beginPath();
+	ctxCircles.moveTo(posr.x, posr.y);
+	ctxCircles.lineTo(posPen.x, posPen.y);
+	ctxCircles.stroke();
 	
-	ctx.beginPath();
-	ctx.arc(posPen.x, posPen.y, 2, 0, 2*Math.PI);
-	ctx.closePath();
-	ctx.stroke();
-	ctx.fill();
+	ctxCircles.beginPath();
+	ctxCircles.arc(posPen.x, posPen.y, 2, 0, 2*Math.PI);
+	ctxCircles.closePath();
+	ctxCircles.stroke();
+	ctxCircles.fill();
 }
 
 // Draw spirograph to offscreen canvas
-function renderSpiro(canvas, ctx) {
-	ctx.lineWidth = 3;
-	ctx.lineJoin = 'round';
-	ctx.lineCap = 'round';
+function renderSpiro() {
+	ctxSpiro.lineWidth = 3;
+	ctxSpiro.lineJoin = 'round';
+	ctxSpiro.lineCap = 'round';
 	
 	// Multi-coloured path
-	var red = Math.sin(0.002 * numPoints + 0) * 127 + 128;
-	var green = Math.sin(0.002 * numPoints + 2) * 127 + 128;
-	var blue = Math.sin(0.002 * numPoints + 4) * 127 + 128;
-	ctx.strokeStyle = "rgb(" + red + "," + green + "," + blue + ")";
+	var red = Math.sin(0.003 * numPoints + 0) * 127 + 128;
+	var green = Math.sin(0.003 * numPoints + 2) * 127 + 128;
+	var blue = Math.sin(0.003 * numPoints + 4) * 127 + 128;
+	ctxSpiro.strokeStyle = "rgb(" + red + "," + green + "," + blue + ")";
 	
-	ctx.beginPath();
-	ctx.moveTo(lastPosPen.x, lastPosPen.y);
-	ctx.lineTo(posPen.x, posPen.y);
-	ctx.stroke();
+	ctxSpiro.beginPath();
+	ctxSpiro.moveTo(lastPosPen.x, lastPosPen.y);
+	ctxSpiro.lineTo(posPen.x, posPen.y);
+	ctxSpiro.stroke();
 }
 
-// Draw offscreen canvases to main canvas
+// Update and render spirograph and circles
 function render() {
 	ctxMain.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+	
+	// Update spirograph
 	if (!(btnPause.disabled)) {
 		numPoints++;
+		t += speedr;
 		lastPosPen = posPen;
-		posr = rotatePoint(posr, {x: mainCanvas.width / 2, y: mainCanvas.height / 2}, speedr);
-		posPen = rotatePoint(rotatePoint(posPen, {x: mainCanvas.width / 2, y: mainCanvas.height / 2}, speedr), posr, speedPen);
-		renderSpiro(spiroCanvas, ctxSpiro);
+		updateSpiro();
+		renderSpiro();
 	}
 	
+	// Draw offscreen canvases to main canvas
 	ctxMain.drawImage(spiroCanvas, 0, 0);
-	renderCircles(circlesCanvas, ctxCircles);
+	renderCircles();
 	if (btnCircles.checked) {
 		ctxMain.drawImage(circlesCanvas, 0, 0);
 	}

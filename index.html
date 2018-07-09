@@ -16,7 +16,7 @@
 				<input type="button" id="epi-btn" value="Epitrochoid"><br>
 				Fixed circle radius: 
 				<input class="textbox" id="R-input" type="number" value="320"><br>
-				Rotating circle radius: 
+				Rolling circle radius: 
 				<input class="textbox" id="r-input" type="number" value="105"><br>
 				Pen offset: 
 				<input class="textbox" id="pen-input" type="number" value="70"><br>
@@ -37,7 +37,7 @@
 		// Get document elements
 		var btnHypo = document.getElementById("hypo-btn");
 		var btnEpi = document.getElementById("epi-btn");
-		var inputR = document.getElementById("R-input");
+		var input = document.getElementById("R-input");
 		var inputr = document.getElementById("r-input");
 		var inputPen = document.getElementById("pen-input");
 		var btnCircles = document.getElementById("circle-btn");
@@ -68,11 +68,11 @@
 		var ctxSpiro = spiroCanvas.getContext("2d");
 		
 		// Global variables
-		var R = Number(inputR.value);			// radius of fixed circle
+		var R = Number(input.value);			// radius of fixed circle
 		var r = Number(inputr.value);			// radius of rotating circle
-		var offset = Number(inputPen.value);	// pen offset
-		var speedr;								// rotation speed of circle
-		var speedPen;							// rotation speed of pen
+		var p = Number(inputPen.value);			// pen offset
+		var t = 0;								// angle	
+		var speedr = -2.5 * Math.PI / 180;		// rotation speed of circle
 		var posr;								// position of rotating circle
 		var posPen;								// position of pen
 		var numPoints = 1;						// number of sample points
@@ -83,7 +83,7 @@
 			btnHypo.disabled = true;
 			btnEpi.classList.remove("active");
 			btnEpi.disabled = false;
-			initHypotrochoid();
+			initSpiro();
 		})
 		
 		// User selects epitrochoid
@@ -92,7 +92,7 @@
 			btnHypo.disabled = false;
 			btnEpi.classList.add("active");
 			btnEpi.disabled = true;
-			initEpitrochoid();
+			initSpiro();
 		})
 		
 		// User starts spirograph animation
@@ -103,7 +103,7 @@
 			btnStart.disabled = true;
 			btnPause.classList.remove("active");
 			btnPause.disabled = false;
-			inputR.disabled = true;
+			input.disabled = true;
 			inputr.disabled = true;
 			inputPen.disabled = true;
 		})
@@ -122,7 +122,7 @@
 			btnStart.disabled = false;
 			btnPause.classList.add("active");
 			btnPause.disabled = true;
-			inputR.disabled = false;
+			input.disabled = false;
 			inputr.disabled = false;
 			inputPen.disabled = false;
 			
@@ -131,55 +131,41 @@
 			ctxSpiro.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
 			if (btnHypo.classList.contains("active")) {
 				btnEpi.disabled = false;
-				initHypotrochoid();
 			} else {
 				btnHypo.disabled = false;
-				initEpitrochoid();
 			}
+			initSpiro();
 		})
 		
 		// User changes radius of fixed circle
-		inputR.addEventListener("change", function () {
-			R = Number(inputR.value);
-			if (btnHypo.classList.contains("active")) {
-				initHypotrochoid();
-			} else {
-				initEpitrochoid();
-			}
-			
+		input.addEventListener("change", function () {
+			R = Number(input.value);
+			initSpiro();
 		})
 		
 		// User changes radius of rotating circle
 		inputr.addEventListener("change", function () {
 			r = Number(inputr.value);
-			if (btnHypo.classList.contains("active")) {
-				initHypotrochoid();
-			} else {
-				initEpitrochoid();
-			}
+			initSpiro();
 		})
 		
 		// User changes pen offset
 		inputPen.addEventListener("change", function () {
-			offset = Number(inputPen.value);
-			if (btnHypo.classList.contains("active")) {
-				initHypotrochoid();
-			} else {
-				initEpitrochoid();
-			}
+			p = Number(inputPen.value);
+			initSpiro();
 		})
 		
 		// User saves as PNG
 		aPNG.addEventListener("click", function () {
-			downloadCanvas(this, spiroCanvas, "spirograph", "png");
+			downloadSpiro(this, "spirograph", "png");
 		})
 		
 		// User saves as JPEG
 		aJPG.addEventListener("click", function () {
-			downloadCanvas(this, spiroCanvas, "spirograph", "jpeg");
+			downloadSpiro(this, "spirograph", "jpeg");
 		})
 		
-		initHypotrochoid();
+		initSpiro();
 		window.requestAnimationFrame(render);
 	</script>
 </body>
