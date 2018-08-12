@@ -16,8 +16,8 @@ The Spirograph toy traces out two kinds of roulettes, namely hypotrochoids and e
 A hypotrochoid is a roulette in which the fixed point is attached to a circle that rolls **inside** a stationary circle. Thus, the parametric equations for a hypotrochoid are:
 
 ```
-x = (R - r) * cos(t) + p * cos((R - r) / r * t)
-y = (R - r) * sin(t) + p * sin((R - r) / r * t)
+x(t) = (R - r) * cos(t) + p * cos((R - r) / r * t)
+y(t) = (R - r) * sin(t) + p * sin((R - r) / r * t)
 ```
 where `R` is the radius of the stationary circle, `r` is the radius of the rotating circle, and `p` is the distance of the fixed point from the center of the rotating circle. 
 
@@ -29,8 +29,8 @@ Screenshots taken with the save image feature.
 An epitrochoid is a roulette in which the fixed point is attached to a circle that rolls along the **outside** of a stationary circle. Thus, the parametric equations for an epitrochoid are:
 
 ```
-x = (R + r) * cos(t) - p * cos((R + r) / r * t)
-y = (R + r) * sin(t) - p * sin((R + r) / r * t)
+x(t) = (R + r) * cos(t) - p * cos((R + r) / r * t)
+y(t) = (R + r) * sin(t) - p * sin((R + r) / r * t)
 ```
 
 ![Hypotrochoid](screenshots/epi1.png) ![Hypotrochoid](screenshots/epi2.png)
