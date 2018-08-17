@@ -63,9 +63,9 @@ function renderSpiro() {
 	ctxSpiro.lineCap = 'round';
 	
 	// Multi-coloured path
-	var red = Math.sin(0.003 * numPoints + 0) * 127 + 128;
-	var green = Math.sin(0.003 * numPoints + 2) * 127 + 128;
-	var blue = Math.sin(0.003 * numPoints + 4) * 127 + 128;
+	var red = Math.round(Math.sin(0.003 * numPoints + 0) * 127 + 128);
+	var green = Math.round(Math.sin(0.003 * numPoints + 2) * 127 + 128);
+	var blue = Math.round(Math.sin(0.003 * numPoints + 4) * 127 + 128);
 	ctxSpiro.strokeStyle = "rgb(" + red + "," + green + "," + blue + ")";
 	
 	ctxSpiro.beginPath();
