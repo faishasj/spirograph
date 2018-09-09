@@ -72,10 +72,10 @@
 		var r = Number(inputr.value);			// radius of rotating circle
 		var p = Number(inputPen.value);			// pen offset
 		var t = 0;								// angle	
-		var speedr = -2.5 * Math.PI / 180;		// rotation speed of circle
+		var speedr;								// rotation speed of circle
 		var posr;								// position of rotating circle
 		var posPen;								// position of pen
-		var numPoints = 1;						// number of sample points
+		var numRotations;						// number of revolutions made by rotating circle
 		
 		// User selects hypotrochoid
 		btnHypo.addEventListener("click", function() {
@@ -157,12 +157,22 @@
 		
 		// User saves as PNG
 		aPNG.addEventListener("click", function () {
-			downloadSpiro(this, "spirograph", "png");
+			if (btnHypo.classList.contains("active")) {
+				filename = "hypo";
+			} else {
+				filename = "epi";
+			}
+			downloadSpiro(this, filename + "-" + R.toString() + "-" + r.toString() + "-" + p.toString(), "png");
 		})
 		
 		// User saves as JPEG
 		aJPG.addEventListener("click", function () {
-			downloadSpiro(this, "spirograph", "jpeg");
+			if (btnHypo.classList.contains("active")) {
+				filename = "hypo";
+			} else {
+				filename = "epi";
+			}
+			downloadSpiro(this, filename + "-" + R.toString() + "-" + r.toString() + "-" + p.toString(), "jpeg");
 		})
 		
 		initSpiro();
