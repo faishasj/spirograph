@@ -8,7 +8,7 @@ function downloadSpiro(a, filename, format) {
 function initSpiro() {
 	t = 0;
 	updateSpiro();
-	firstPosPen = lastPosPen = posPen; 
+	lastPosPen = posPen; 
 	numRotations = lcm(R, r) / R;
 	speedr = 4 * Math.PI / 180;
 	if (!btnHypo.classList.contains("active")) { 
