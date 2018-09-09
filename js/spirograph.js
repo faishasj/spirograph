@@ -9,14 +9,35 @@ function initSpiro() {
 	t = 0;
 	updateSpiro();
 	firstPosPen = lastPosPen = posPen; 
+	numRotations = lcm(R, r) / R;
+	speedr = 4 * Math.PI / 180;
+	if (!btnHypo.classList.contains("active")) { 
+		// Slower speed for drawing epitrochoids
+		speedr /= 1.5;
+	}
+}
+
+// Calculate the lowest common multiple of two numbers
+function lcm(x, y) {
+  	return x * y / gcd(x, y);
+}
+
+// Calculate the greatest common divisor of two numbers
+function gcd(x, y) {
+  	while(y) {
+    	var tmp = y;
+    	y = x % y;
+    	x = tmp;
+  	}
+  	return x;
 }
 
 // Update position of rotating circle and pen
 function updateSpiro() {
 	if (btnHypo.classList.contains("active")) { 
 		// Hypotrochoid parametric equations
-		posr = {x: mainCanvas.width / 2 + (R-r) * Math.cos(t), y: mainCanvas.height / 2 - (R-r) * Math.sin(t)};
-		posPen = {x: posr.x + p * Math.cos((R-r) / r * t), y: posr.y + p * Math.sin((R-r) / r * t)};
+		posr = {x: mainCanvas.width / 2 + (R-r) * Math.cos(t), y: mainCanvas.height / 2 + (R-r) * Math.sin(t)};
+		posPen = {x: posr.x + p * Math.cos((R-r) / r * t), y: posr.y - p * Math.sin((R-r) / r * t)};
 	} else {
 		// Epitrochoid parametric equations
 		posr = {x: mainCanvas.width / 2 + (R+r) * Math.cos(t), y: mainCanvas.height / 2 + (R+r) * Math.sin(t)};
@@ -63,9 +84,9 @@ function renderSpiro() {
 	ctxSpiro.lineCap = 'round';
 	
 	// Multi-coloured path
-	var red = Math.sin(0.003 * numPoints + 0) * 127 + 128;
-	var green = Math.sin(0.003 * numPoints + 2) * 127 + 128;
-	var blue = Math.sin(0.003 * numPoints + 4) * 127 + 128;
+	var red = Math.round(Math.sin(t / numRotations + 0) * 127 + 128);
+	var green = Math.round(Math.sin(t / numRotations + 2) * 127 + 128);
+	var blue = Math.round(Math.sin(t / numRotations + 4) * 127 + 128);
 	ctxSpiro.strokeStyle = "rgb(" + red + "," + green + "," + blue + ")";
 	
 	ctxSpiro.beginPath();
@@ -80,7 +101,6 @@ function render() {
 	
 	// Update spirograph
 	if (!(btnPause.disabled)) {
-		numPoints++;
 		t += speedr;
 		lastPosPen = posPen;
 		updateSpiro();
@@ -95,7 +115,7 @@ function render() {
 	}
 	
 	// Stop if spirograph is complete
-	if (numPoints > 1 && Math.abs(firstPosPen.x - posPen.x) < 0.001 && Math.abs(firstPosPen.y - posPen.y) < 0.001) {
+	if (t >= 2 * Math.PI * numRotations) {
 		btnStart.classList.remove("active");
 		btnStart.disabled = true;
 		btnPause.classList.remove("active");
